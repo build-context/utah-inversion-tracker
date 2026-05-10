@@ -1,11 +1,11 @@
 "use client";
 
+import type { InversionForecastStatus } from "@/lib/inversion";
 import { useEffect, useState } from "react";
 
 type Props = {
-  targetIso: string | null;
-  noInversionReason: "none_predicted" | "forecast_unavailable" | null;
-  forecastDays: number;
+  inversionStartIso: string | null;
+  status: InversionForecastStatus;
 };
 
 function formatDuration(ms: number): string {
@@ -36,11 +36,7 @@ function formatLocalWhen(iso: string): string {
   }).format(d);
 }
 
-export function InversionCountdown({
-  targetIso,
-  noInversionReason,
-  forecastDays,
-}: Props) {
+export function InversionCountdown({ inversionStartIso, status }: Props) {
   const [now, setNow] = useState(() => Date.now());
 
   useEffect(() => {
@@ -48,45 +44,27 @@ export function InversionCountdown({
     return () => clearInterval(id);
   }, []);
 
-  const remainingMs =
-    targetIso != null ? new Date(targetIso).getTime() - now : null;
-
-  if (noInversionReason === "forecast_unavailable") {
+  if (status === "forecast_unavailable") {
     return (
-      <div className="flex flex-col items-center gap-4 text-center">
-        <p className="text-4xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-5xl">
-          Forecast unavailable
-        </p>
-        <p className="max-w-md text-lg text-zinc-600 dark:text-zinc-400">
-          Could not load Open-Meteo data. Try again later.
-        </p>
-      </div>
+      <p className="text-center text-xl text-zinc-700 dark:text-zinc-300">
+        Forecast unavailable.
+      </p>
     );
   }
 
-  if (!targetIso || noInversionReason === "none_predicted") {
+  if (status === "none_predicted" || !inversionStartIso) {
     return (
-      <div className="flex flex-col items-center gap-4 text-center">
-        <p className="text-4xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-5xl">
-          No inversion-like window
-        </p>
-        <p className="max-w-md text-lg text-zinc-600 dark:text-zinc-400">
-          No simple inversion-like hour in the next {forecastDays} days of
-          forecast (warmer air ~180 m above surface, light wind). This is a
-          rough demo, not an official air-quality forecast.
-        </p>
-      </div>
+      <p className="text-center text-xl text-zinc-700 dark:text-zinc-300">
+        No inversion expected in the next 16 days.
+      </p>
     );
   }
 
-  const display =
-    remainingMs != null ? formatDuration(remainingMs) : "—";
+  const remainingMs = new Date(inversionStartIso).getTime() - now;
+  const display = formatDuration(remainingMs);
 
   return (
-    <div className="flex flex-col items-center gap-2 text-center">
-      <p className="text-sm font-medium uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-        Time until next inversion-like hour
-      </p>
+    <div className="flex flex-col items-center gap-3 text-center">
       <p
         className="font-mono text-5xl font-semibold tabular-nums tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-6xl"
         suppressHydrationWarning
@@ -94,7 +72,7 @@ export function InversionCountdown({
         {display}
       </p>
       <p className="text-lg text-zinc-600 dark:text-zinc-400">
-        Around {formatLocalWhen(targetIso)}
+        {formatLocalWhen(inversionStartIso)}
       </p>
     </div>
   );
