@@ -1,0 +1,22 @@
+# Firebase App Hosting — https://firebase.google.com/docs/app-hosting/configure
+# Console overrides env vars here; use this file for run settings and checked-in defaults.
+
+runConfig:
+  minInstances: 0
+  # maxInstances: 100
+  # concurrency: 80
+  # cpu: 1
+  # memoryMiB: 512
+
+# Optional: override Salt Lake Valley pin (defaults are in lib/openmeteo.ts if unset).
+# env:
+#   - variable: WASATCH_LAT
+#     value: "40.76"
+#     availability:
+#       - BUILD
+#       - RUNTIME
+#   - variable: WASATCH_LON
+#     value: "-111.89"
+#     availability:
+#       - BUILD
+#       - RUNTIME
