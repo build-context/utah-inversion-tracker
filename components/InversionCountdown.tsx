@@ -46,7 +46,7 @@ export function InversionCountdown({ inversionStartIso, status }: Props) {
 
   if (status === "forecast_unavailable") {
     return (
-      <p className="text-center text-xl text-zinc-700 dark:text-zinc-300">
+      <p className="text-center text-xl text-muted">
         Forecast unavailable.
       </p>
     );
@@ -54,7 +54,7 @@ export function InversionCountdown({ inversionStartIso, status }: Props) {
 
   if (status === "none_predicted" || !inversionStartIso) {
     return (
-      <p className="text-center text-xl text-zinc-700 dark:text-zinc-300">
+      <p className="text-center text-xl text-muted">
         No inversion expected in the next 16 days.
       </p>
     );

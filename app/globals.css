@@ -3,11 +3,13 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --muted: #525252;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -16,6 +18,51 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --muted: #a3a3a3;
+  }
+}
+
+/* No inversion — crisp sky / alpine air */
+[data-air-theme="clean"] {
+  --foreground: #0f3d3a;
+  --muted: #115e59;
+  background: linear-gradient(
+    168deg,
+    #f6fffe 0%,
+    #ccfbf1 38%,
+    #5eead4 58%,
+    #bae6fd 100%
+  );
+  color: var(--foreground);
+}
+
+/* Inversion — stagnant basin / smog */
+[data-air-theme="dirty"] {
+  --foreground: #fff7ed;
+  --muted: #c4b5a0;
+  background: linear-gradient(
+    168deg,
+    #0c0a09 0%,
+    #3f2e22 42%,
+    #57534e 72%,
+    #1c1917 100%
+  );
+  color: var(--foreground);
+}
+
+/* Forecast missing — unobtrusive neutral */
+[data-air-theme="neutral"] {
+  --foreground: #18181b;
+  --muted: #71717a;
+  background: linear-gradient(180deg, #fafafa 0%, #e4e4e7 100%);
+  color: var(--foreground);
+}
+
+@media (prefers-color-scheme: dark) {
+  [data-air-theme="neutral"] {
+    --foreground: #fafafa;
+    --muted: #a1a1aa;
+    background: linear-gradient(180deg, #18181b 0%, #27272a 100%);
   }
 }
 
